@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cover - Free Bulma template</title>
+    <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bulma Version 0.7.1-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+    <style type="text/css">
+        html,
+        body {
+            font-family: 'Open Sans';
+            }
+        img {
+            padding: 5px;
+            border: 1px solid #ccc;
+            }
+    </style>
+
+    <script>
+function _(id){ return document.getElementById(id); }
+function submitForm(){
+	_("mybtn").disabled = true;
+    _("mybtn").classList.add('is-loading');
+	_("status").innerHTML = 'please wait ...';
+    const from =  _("from").value;
+    const fromAmt = _("fromAmt").value;
+    const to = _("to").value;
+    const check = (from === '' || fromAmt === '' || to === '')?
+     false : true;
+
+    if(!check) {
+          _("status").innerHTML = `<div class="notification is-danger"> All fields Required</div>`;
+          _("mybtn").disabled = false;
+          return;
+    }
+	if(check){
+        const formdata = {
+        'from': from,
+        'fromAmt': fromAmt,
+        'to': to
+    }
+	var ajax = new XMLHttpRequest();
+	ajax.open( "POST", "/" );
+    ajax.setRequestHeader("Content-Type", "application/json");
+	ajax.onreadystatechange = function() {
+		if(ajax.readyState == 4 && ajax.status == 200) {
+			if(ajax.responseText == "success"){
+				_("status").innerHTML = '<h2>Thanks '+_("fromAmt").value+', your message has been sent.</h2>';
+                setTimeout(() => {
+                    _("mybtn").classList.remove('is-loading');
+                    _("mybtn").disabled = false;
+                }, 200)
+			} else {
+				_("status").innerHTML = ajax.responseText;
+				_("mybtn").disabled = false;
+			}
+		}
+	}
+
+	ajax.send( JSON.stringify(formdata));
+    }
+}
+</script>
+</head>
+
+<body>
+    <section class="hero is-fullheight is-default is-bold">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../">
+            <img src="assets/logo.png" alt="Logo">
+          </a>
+                        <span class="navbar-burger burger" data-target="navbarMenu">
+            <span></span>
+                        <span></span>
+                        <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            <div class="tabs is-right">
+                                <ul>
+                                    <li class="is-active"><a>Home</a></li>
+                                    <li><a href="">Examples</a></li>
+                                    <li><a href="">Features</a></li>
+                                    <li><a href="">Team</a></li>
+                                    <li><a href="">Help</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-vcentered">
+                    <div class="column is-5">
+                        <figure class="image is-4by3">
+                            <img src="https://picsum.photos/800/600/?random" alt="Description">
+                        </figure>
+                    </div>
+                    <div class="column is-6 is-offset-1">
+                        <h1 class="title is-4">
+                             {{screamIt welcomeMessage}}
+                        </h1>
+                        <form id="my_form" onsubmit="submitForm(); return false;">
+                        <div class="form  is-vcentered">
+                           <div class="field has-addons">
+                            <p class="control">
+                                <span class="select is-large">
+                                <select id="from" placeholder="From Currency" required>
+                                    <option selected>XAF</option>
+                                    <option>£</option>
+                                    <option>€</option>
+                                </select>
+                                </span>
+                            </p>
+                            <p class="control">
+                                <input class="input is-large" type="text" id="fromAmt" name="fromAmt"  placeholder="Amount of money">
+                            </p>
+                            <p class="control ">
+                                <span class="select is-large">
+                                <select id="to" placeholder="To Currency" required>
+                                    <option selected>USD</option>
+                                    <option>£</option>
+                                    <option>€</option>
+                                </select>
+                                </span>
+                            </p>
+                            </div>
+                             <p>
+                                 <button id="mybtn" class="button is-primary"  type="submit"> 
+                                 Convert Now
+                              </button> 
+                              <span id="status"></span>
+                              </p>
+                            </div>
+                        </form>
+                          <!--<form id="my_form" onsubmit="submitForm(); return false;">
+                            <p><input id="n" placeholder="Name" required></p>
+                            <p><input id="e" placeholder="Email Address" type="email" required></p>
+                            <textarea id="m" placeholder="write your message here" rows="10" required></textarea>
+                            <p><input id="mybtn" type="submit" value="Submit Form"> <span id="status"></span></p>
+                            </form>-->
+                        <br>
+                        <p class="has-text-centered">
+                            <a class="button is-medium is-info is-outlined">
+                Learn more
+              </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-foot">
+            <div class="container">
+                <div class="tabs is-centered">
+                    <ul>
+                        <li>{{> footer}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

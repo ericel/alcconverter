@@ -49,11 +49,9 @@ config._hbs.registerHelper('getCurrentYear', () => {
 
 config.app.use('/', WelcomeController);
 
-
-
 // Serve the application at the given port
 config.app.listen(port, () => {
-    config._fs.copy('src/app/template', 'dist/app/template/')
+    config._fs.copy('src/app/template', 'docs/app/template/')
     .then(() => console.log('success!'))
     .catch(err => console.error(err))
     // Success callback

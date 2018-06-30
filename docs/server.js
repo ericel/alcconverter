@@ -47,7 +47,7 @@ config._hbs.registerHelper('screamIt', (text) => {
 config.app.use('/', controllers_1.WelcomeController);
 // Serve the application at the given port
 config.app.listen(port, () => {
-    config._fs.copy('src/app/template', 'dist/app/template/')
+    config._fs.copy('src/app/template', 'docs/app/template/')
         .then(() => console.log('success!'))
         .catch(err => console.error(err));
     // Success callback
